@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36623.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LeaveManagementCodeFirst", "LeaveManagementCodeFirst\LeaveManagementCodeFirst.fsproj", "{A05353CF-C5AF-41A5-843A-4A36DCFF4C78}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A05353CF-C5AF-41A5-843A-4A36DCFF4C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A05353CF-C5AF-41A5-843A-4A36DCFF4C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A05353CF-C5AF-41A5-843A-4A36DCFF4C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A05353CF-C5AF-41A5-843A-4A36DCFF4C78}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52BE5E41-9B9A-4D65-847C-95C3906F856C}
+	EndGlobalSection
+EndGlobal
