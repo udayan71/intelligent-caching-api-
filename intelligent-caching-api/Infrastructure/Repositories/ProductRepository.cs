@@ -15,11 +15,14 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync(int pageNumber,
+    int pageSize)
         {
             return await _context.Products
                 .AsNoTracking()
                 .OrderBy(product => product.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
         }
 
@@ -43,6 +46,8 @@ namespace Infrastructure.Repositories
 
             existing.Name = product.Name;
             existing.Price = product.Price;
+            existing.Stock = product.Stock;
+            existing.Category = product.Category;
 
             await _context.SaveChangesAsync();
             return existing;

@@ -1,3 +1,4 @@
+using Application.Common.Pagination;
 using Application.DTOs;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
@@ -21,9 +22,10 @@ namespace Application.Services
             _metrics = metrics;
         }
 
-        public async Task<IEnumerable<ProductResponseDto>> GetAllAsync()
+        public async Task<IEnumerable<ProductResponseDto>> GetAllAsync(PaginationParams paginationParams)
         {
-            var cachedProducts = await _cache.GetAsync<IEnumerable<ProductResponseDto>>(AllProductsCacheKey);
+            var cacheKey = $"products_{paginationParams.PageNumber}_{paginationParams.PageSize}";
+            var cachedProducts = await _cache.GetAsync<IEnumerable<ProductResponseDto>>(cacheKey);
             if (cachedProducts != null)
             {
                 _metrics.RecordCacheHit();
@@ -31,10 +33,10 @@ namespace Application.Services
             }
 
             _metrics.RecordCacheMiss();
-            var products = await _repo.GetAllAsync();
+            var products = await _repo.GetAllAsync(paginationParams.PageNumber,paginationParams.PageSize);
             var response = products.Select(MapToResponse).ToList();
 
-            await _cache.SetAsync(AllProductsCacheKey, response, CacheExpiration);
+            await _cache.SetAsync(cacheKey, response, CacheExpiration);
 
             return response;
         }
@@ -67,7 +69,9 @@ namespace Application.Services
             var product = new Product
             {
                 Name = dto.Name.Trim(),
-                Price = dto.Price
+                Price = dto.Price,
+                Stock = dto.Stock,
+                Category = dto.Category?.Trim()
             };
 
             var created = await _repo.AddAsync(product);
@@ -83,7 +87,9 @@ namespace Application.Services
             var updated = await _repo.UpdateAsync(id, new Product
             {
                 Name = dto.Name.Trim(),
-                Price = dto.Price
+                Price = dto.Price,
+                Stock = dto.Stock,
+                Category = dto.Category?.Trim()
             });
 
             if (updated == null)
@@ -110,6 +116,12 @@ namespace Application.Services
 
             if (dto.Price <= 0)
                 throw new ArgumentException("Price must be greater than zero");
+
+            if (dto.Stock < 0)
+                throw new ArgumentException("Stock cannot be negative");
+
+            // Category can be optional but ensure non-null to avoid null propagation
+            dto.Category ??= string.Empty;
         }
 
         private static ProductResponseDto MapToResponse(Product product)
@@ -118,7 +130,9 @@ namespace Application.Services
             {
                 Id = product.Id,
                 Name = product.Name,
-                Price = product.Price
+                Price = product.Price,
+                Stock = product.Stock,
+                Category = product.Category
             };
         }
 

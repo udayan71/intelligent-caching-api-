@@ -9,7 +9,7 @@ namespace Application.Interfaces.Repositories
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetAllAsync();
+        Task<IEnumerable<Product>> GetAllAsync(int pageNumber,int pageSize);
         Task<Product?> GetByIdAsync(int id);
         Task<Product> AddAsync(Product product);
         Task<Product?> UpdateAsync(int id, Product product);

@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.Common.Pagination;
+using Application.DTOs;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Application.Interfaces.Services
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductResponseDto>> GetAllAsync();
+        Task<IEnumerable<ProductResponseDto>> GetAllAsync(PaginationParams paginationParams);
         Task<ProductResponseDto?> GetByIdAsync(int id);
         Task<ProductResponseDto> CreateAsync(ProductDto dto);
         Task<ProductResponseDto?> UpdateAsync(int id, ProductDto dto);
