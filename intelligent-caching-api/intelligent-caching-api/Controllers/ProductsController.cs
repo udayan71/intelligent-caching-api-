@@ -21,11 +21,11 @@ namespace intelligent_caching_api.Controllers
         }
 
         [HttpGet(ApiRoutes.Products.GetAll)]
-        public async Task<IActionResult> GetAll([FromQuery] PaginationParams paginationParams)
+        public async Task<IActionResult> GetAll([FromQuery] ProductQueryParams queryParams)
         {
             _logger.LogInformation("Fetching all products");
 
-            var products = await _service.GetAllAsync(paginationParams);
+            var products = await _service.GetAllAsync(queryParams);
 
             return Ok(products);
         }

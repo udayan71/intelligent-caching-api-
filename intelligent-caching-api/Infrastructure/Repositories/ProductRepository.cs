@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Repositories;
+﻿using Application.Common.Pagination;
+using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +16,40 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync(int pageNumber,
-    int pageSize)
+        public async Task<IEnumerable<Product>> GetAllAsync(ProductQueryParams queryParams)
         {
-            return await _context.Products
-                .AsNoTracking()
+            var query = _context.Products.AsQueryable();
+
+            // FILTERING
+
+            if (!string.IsNullOrWhiteSpace(queryParams.Category))
+            {
+                query = query.Where(product =>
+                    product.Category == queryParams.Category);
+            }
+
+            if (queryParams.MinPrice.HasValue)
+            {
+                query = query.Where(product =>
+                    product.Price >= queryParams.MinPrice.Value);
+            }
+
+            if (queryParams.MaxPrice.HasValue)
+            {
+                query = query.Where(product =>
+                    product.Price <= queryParams.MaxPrice.Value);
+            }
+
+            // PAGINATION
+
+            query = query
                 .OrderBy(product => product.Id)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+                .Skip((queryParams.PageNumber - 1)
+                    * queryParams.PageSize)
+                .Take(queryParams.PageSize);
+
+            return await query
+                .AsNoTracking()
                 .ToListAsync();
         }
 

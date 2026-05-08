@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Pagination;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Application.Interfaces.Repositories
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetAllAsync(int pageNumber,int pageSize);
+        Task<IEnumerable<Product>> GetAllAsync(ProductQueryParams queryParams);
         Task<Product?> GetByIdAsync(int id);
         Task<Product> AddAsync(Product product);
         Task<Product?> UpdateAsync(int id, Product product);

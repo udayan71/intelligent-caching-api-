@@ -11,7 +11,7 @@ namespace Application.Interfaces.Services
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductResponseDto>> GetAllAsync(PaginationParams paginationParams);
+        Task<IEnumerable<ProductResponseDto>> GetAllAsync(ProductQueryParams queryParams);
         Task<ProductResponseDto?> GetByIdAsync(int id);
         Task<ProductResponseDto> CreateAsync(ProductDto dto);
         Task<ProductResponseDto?> UpdateAsync(int id, ProductDto dto);

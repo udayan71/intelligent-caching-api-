@@ -22,9 +22,14 @@ namespace Application.Services
             _metrics = metrics;
         }
 
-        public async Task<IEnumerable<ProductResponseDto>> GetAllAsync(PaginationParams paginationParams)
+        public async Task<IEnumerable<ProductResponseDto>> GetAllAsync(ProductQueryParams queryParams)
         {
-            var cacheKey = $"products_{paginationParams.PageNumber}_{paginationParams.PageSize}";
+            var cacheKey = $"products_" +
+                           $"{queryParams.PageNumber}_" +
+                           $"{queryParams.PageSize}_" +
+                           $"{queryParams.Category}_" +
+                           $"{queryParams.MinPrice}_" +
+                           $"{queryParams.MaxPrice}";
             var cachedProducts = await _cache.GetAsync<IEnumerable<ProductResponseDto>>(cacheKey);
             if (cachedProducts != null)
             {
@@ -33,7 +38,7 @@ namespace Application.Services
             }
 
             _metrics.RecordCacheMiss();
-            var products = await _repo.GetAllAsync(paginationParams.PageNumber,paginationParams.PageSize);
+            var products = await _repo.GetAllAsync(queryParams);
             var response = products.Select(MapToResponse).ToList();
 
             await _cache.SetAsync(cacheKey, response, CacheExpiration);
