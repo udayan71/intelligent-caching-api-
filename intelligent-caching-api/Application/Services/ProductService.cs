@@ -125,7 +125,6 @@ namespace Application.Services
             if (dto.Stock < 0)
                 throw new ArgumentException("Stock cannot be negative");
 
-            // Category can be optional but ensure non-null to avoid null propagation
             dto.Category ??= string.Empty;
         }
 
