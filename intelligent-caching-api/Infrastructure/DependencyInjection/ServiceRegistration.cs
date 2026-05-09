@@ -8,6 +8,7 @@ using Infrastructure.Repositories;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Services;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -27,7 +28,9 @@ namespace Infrastructure.DependencyInjection
                 options.InstanceName = "IntelligentCachingApi:";
             });
 
-            services.AddSingleton<ICacheService, RedisCacheService>();
+            services.AddMemoryCache();
+            services.AddScoped<RedisCacheService>();
+            services.AddScoped<ICacheService, FaultTolerantCacheService>();
             services.AddSingleton<IPerformanceMetrics, PerformanceMetrics>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
