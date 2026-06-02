@@ -6,17 +6,25 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Product
+    public class User
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public int Stock { get; set; }
-        public string Category { get; set; }
-        public int ViewCount { get; set; }
+
+        public string FirstName { get; set; } = string.Empty;
+
+        public string LastName { get; set; } = string.Empty;
+
+        public string Email { get; set; }
+
+        public string PasswordHash { get; set; }
+
         public bool IsActive { get; set; } = true;
+        public bool IsDeleted { get; set; } = false;
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
+
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 }
