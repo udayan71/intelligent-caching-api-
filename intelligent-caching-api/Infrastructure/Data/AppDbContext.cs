@@ -23,6 +23,8 @@ namespace Infrastructure.Data
 
         public DbSet<RolePermission> RolePermissions { get; set; }
 
+        public DbSet<ProductImage> ProductImages { get; set; }
+
 
         protected override void OnModelCreating(
             ModelBuilder modelBuilder)
@@ -44,17 +46,48 @@ namespace Infrastructure.Data
                 entity.Property(p => p.Category)
                       .HasMaxLength(50);
 
+                entity.Property(p => p.IsActive)
+                      .HasDefaultValue(true);
+
+                entity.Property(p => p.CreatedAt)
+                      .IsRequired();
+
+                entity.Property(p => p.UpdatedAt)
+                      .IsRequired();
+
                 entity.HasIndex(p => p.Name);
 
                 entity.HasIndex(p => p.Category);
             });
 
+            modelBuilder.Entity<ProductImage>(entity =>
+            {
+                entity.HasKey(pi => pi.Id);
+
+                entity.Property(pi => pi.ImageUrl)
+                      .IsRequired()
+                      .HasMaxLength(500);
+
+                entity.Property(pi => pi.IsPrimary)
+                      .HasDefaultValue(false);
+
+                entity.HasOne(pi => pi.Product)
+                      .WithMany(p => p.Images)
+                      .HasForeignKey(pi => pi.ProductId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(pi => pi.ProductId);
+            });
 
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(u => u.Id);
 
-                entity.Property(u => u.Name)
+                entity.Property(u => u.FirstName)
+                      .IsRequired()
+                      .HasMaxLength(100);
+
+                entity.Property(u => u.LastName)
                       .IsRequired()
                       .HasMaxLength(100);
 
@@ -63,6 +96,18 @@ namespace Infrastructure.Data
                       .HasMaxLength(150);
 
                 entity.Property(u => u.PasswordHash)
+                      .IsRequired();
+
+                entity.Property(u => u.IsActive)
+                      .HasDefaultValue(true);
+
+                entity.Property(u => u.IsDeleted)
+                      .HasDefaultValue(false);
+
+                entity.Property(u => u.CreatedAt)
+                      .IsRequired();
+
+                entity.Property(u => u.UpdatedAt)
                       .IsRequired();
 
                 entity.HasIndex(u => u.Email)
