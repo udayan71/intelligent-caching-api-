@@ -16,5 +16,12 @@ namespace Application.Constants
 
             public const string Delete = Base + "/products/{id:int}";
         }
+
+        public static class Auth
+        {
+            public const string Register = Base + "/auth/register";
+
+            public const string Login = Base + "/auth/login";
+        }
     }
 }
