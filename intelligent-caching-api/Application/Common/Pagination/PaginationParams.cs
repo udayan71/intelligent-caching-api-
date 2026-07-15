@@ -8,7 +8,7 @@ namespace Application.Common.Pagination
 {
     public class PaginationParams
     {
-        private const int MaxPageSize = 50;
+        private const int MaxPageSize = 100;
 
         public int PageNumber { get; set; } = 1;
 
