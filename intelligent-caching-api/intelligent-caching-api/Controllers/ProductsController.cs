@@ -10,6 +10,7 @@ namespace intelligent_caching_api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _service;
+
         private readonly ILogger<ProductsController> _logger;
 
         public ProductsController(
